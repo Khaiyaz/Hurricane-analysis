@@ -2,6 +2,7 @@
 Data analysis and tidying using Python
 
 Data analysis tasks:
+
 #1
 Update recorded damages to float values
 
