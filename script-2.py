@@ -1,3 +1,4 @@
+# data provided
 # names of hurricanes
 names = ['Cuba I', 'San Felipe II Okeechobee', 'Bahamas', 'Cuba II', 'CubaBrownsville', 'Tampico', 'Labor Day', 'New England', 'Carol', 'Janet', 'Carla', 'Hattie', 'Beulah', 'Camille', 'Edith', 'Anita', 'David', 'Allen', 'Gilbert', 'Hugo', 'Andrew', 'Mitch', 'Isabel', 'Ivan', 'Emily', 'Katrina', 'Rita', 'Wilma', 'Dean', 'Felix', 'Matthew', 'Irma', 'Maria', 'Michael']
 
@@ -19,10 +20,11 @@ damages = ['Damages not recorded', '100M', 'Damages not recorded', '40M', '27.9M
 # deaths for each hurricane
 deaths = [90,4000,16,3103,179,184,408,682,5,1023,43,319,688,259,37,11,2068,269,318,107,65,19325,51,124,17,1836,125,87,45,133,603,138,3057,74]
 
+# data analysed using python
 # 1
-# Update Recorded Damages
+# update recorded damages into numerical form
 updated_damages = []
-# test function by updating damages
+# create function to update damages into numerical form
 def damages_in_float(input_1):
     conversion = {"B": 1000000000, "M": 1000000}
     for damage in input_1:
@@ -42,9 +44,9 @@ damages_in_float(damages)
 '''print(updated_damages)'''
 
 # 2 
-# Create a Table
+# create dictionary for hurricanes with corresponding info
 hurricanes = {}
-# Create and view the hurricanes dictionary
+
 for i in range(0, len(names)):
   hurricanes[names[i]] = {
     'Name': names[i],
@@ -56,11 +58,13 @@ for i in range(0, len(names)):
     'Deaths': deaths[i]
   }
 '''print(hurricanes)'''
+
 # 3
-# Organizing by Year
+# organizing the hurricanes by year in new dictionary
 new_cane_dict = {}
 unique_years = list(dict.fromkeys(years))
-# create a new dictionary of hurricanes with year and key
+
+# values are lists containing a dictionary for each hurricane occurred that year
 for i in range(0, len(unique_years)):
   current_year = unique_years[i]
   new_cane_dict[current_year] = []
@@ -68,45 +72,75 @@ for i in range(0, len(unique_years)):
     if hurricanes[names[j]]['Year'] == current_year:
       new_cane_dict[current_year].append(hurricanes[names[j]])
 '''print(new_cane_dict)'''
+
 # 4
-# Counting Damaged Areas
+# counting how often each area have been affected by a hurricane
+# create a list of unique areas affected by a hurricane
 new_list_areas = []
 for listed_areas in areas_affected:
   for area in listed_areas:
     new_list_areas.append(area)
 
 unique_areas = list(dict.fromkeys(new_list_areas))
-# create dictionary of areas to store the number of hurricanes involved in
+
+# create dictionary of areas to store how many times the areas were affected
 area_count = {}
 for area in unique_areas:
     count = new_list_areas.count(area)
     area_count[area] = count
 '''print(area_count)'''
+
 # 5 
-# Calculating Maximum Hurricane Count
+# find area affected by the most hurricanes
 max_key = max(area_count, key=area_count.get)
 '''print(max_key)'''
-# find most frequently affected area and the number of hurricanes involved in
+# find the number of times the same area was hit by hurricanes
 no_of_hurricanes = area_count['Central America']
 '''print(no_of_hurricanes)'''
+
 # 6
-# Calculating the Deadliest Hurricane
+# find the deadliest hurricane
 deadliest = max(hurricanes, key= lambda v: hurricanes[v]['Deaths'])
 '''print(deadliest)'''
-# find highest mortality hurricane and the number of deaths
+# find the number of deaths it caused
 '''print(hurricanes[deadliest]['Deaths'])'''
+
 # 7
 # categorize hurricanes in new dictionary with mortality severity as key
+mortality_scale = {0: 0, 
+                   1: 100,
+                   2: 500,
+                   3: 1000,
+                   4: 10000}
 cane_by_mortality = {0:[], 1:[], 2:[], 3:[], 4:[], 5:[]}
-# Rating Hurricanes by Mortality
 
+# rating hurricanes by mortality
+for i in range(0, len(hurricanes)):
+  deaths = hurricanes[names[i]]['Deaths']
+  if deaths == 0:
+    cane_by_mortality[0].append(hurricanes[names[i]])
+  elif 0 < deaths <= 100:
+    cane_by_mortality[1].append(hurricanes[names[i]])
+  elif 100 < deaths <= 500:
+    cane_by_mortality[2].append(hurricanes[names[i]])
+  elif 500 < deaths <= 1000:
+    cane_by_mortality[3].append(hurricanes[names[i]])
+  elif 1000 < deaths <= 10000:
+    cane_by_mortality[4].append(hurricanes[names[i]])
+  else:
+    cane_by_mortality[5].append(hurricanes[names[i]])
 
-# 8 Calculating Hurricane Maximum Damage
+'''print(cane_by_mortality)'''
+
+# 8 
+# find hurricane that caused greatest damage
+# first assume one hurricane to be most costly
 max_damage_cane = 'Cuba I'
 max_damage = 0
-# find highest damage inducing hurricane and its total cost
+
+# iterate through each hurricane to find most damage caused
 for i in range(0, len(hurricanes)):
-  value = (hurricanes[names[i]]['Damage'])
+  value = hurricanes[names[i]]['Damage']
   if value == 'Damages not recorded':
     continue
   elif value > max_damage:
@@ -115,15 +149,36 @@ for i in range(0, len(hurricanes)):
   else:
     continue
 
-'''print(max_damage)
-print(max_damage_cane)'''
+'''print(max_damage_cane)
+print(max_damage)'''
 
 # 9
-# Rating Hurricanes by Damage
+# rating hurricanes by damage caused
 damage_scale = {0: 0,
                 1: 100000000,
                 2: 1000000000,
                 3: 10000000000,
                 4: 50000000000}
-  
-# categorize hurricanes in new dictionary with damage severity as key
+
+# categorize hurricanes in new dictionary with damage rating as key
+cane_by_damage = {0:[], 1:[], 2:[], 3:[], 4:[], 5:[]}
+
+# categorize hurricanes by damage scale rating
+for i in range(0, len(hurricanes)):
+  damage = hurricanes[names[i]]['Damage']
+  if damage == 'Damages not recorded':
+    cane_by_damage[0].append(hurricanes[names[i]])
+  elif float(damage) == 0:
+    cane_by_damage[0].append(hurricanes[names[i]])
+  elif 0 < float(damage) <= 100000000:
+    cane_by_damage[1].append(hurricanes[names[i]])
+  elif 100000000 < float(damage) <= 1000000000:
+    cane_by_damage[2].append(hurricanes[names[i]])
+  elif 1000000000 < float(damage) <= 10000000000:
+    cane_by_damage[3].append(hurricanes[names[i]])
+  elif 10000000000 < float(damage) <= 50000000000:
+    cane_by_damage[4].append(hurricanes[names[i]])
+  else:
+    cane_by_damage[5].append(hurricanes[names[i]])
+
+'''print(cane_by_damage)'''
